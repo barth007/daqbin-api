@@ -28,6 +28,16 @@ class UserAPI(APIView):
             response_data = {"Response": "Bin Already Assigned"}
             return Response(response_data,status=status.HTTP_404_NOT_FOUND)
         return Response(serializedUserData.errors, status=status.HTTP_400_BAD_REQUEST)
+    ######################Delete User#######################################
+    def delete(self, request, pk):
+        user = User.objects.filter(userId=pk).first()
+        if user is None:
+             response_data = {"response":"User does not exists"}
+             return Response(response_data,status=status.HTTP_404_NOT_FOUND)
+       #serializerData = UserSerializer(user)
+        user.delete()
+        response_data = {"response":"User Deleted"}
+        return Response(response_data,status=status.HTTP_200_OK)
 
 # Get registered User by ID
 class UserDetailAPI(APIView):
@@ -45,14 +55,9 @@ class UserDetailAPI(APIView):
 # Create your views here.
 class BinAPI(APIView):
     
-    #Function to get all registered users
-    def get(self,request):
-        bins = Bin.objects.all() 
-        serializedBinData = BinSerializer(bins, many=True)
-        return Response(serializedBinData.data)
-    
      #Function for registering new Bin users
     def post(self, request):
+        print("wahala here")
         serializedBinData = BinSerializer(data=request.data)
         ## get bin binUniqueId and check if it exist in Bin table, if it exist Throw error else add/register the bin
         #print(binUniqueId)
@@ -70,8 +75,24 @@ class BinAPI(APIView):
             
         return Response(serializedBinData.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    #Function to get all registered users
+    def get(self,request):
+        bins = Bin.objects.all() 
+        serializedBinData = BinSerializer(bins, many=True)
+        return Response(serializedBinData.data)
     
-        
+    ######################Delete Bin#######################################
+    def delete(self, pk):
+        bin = Bin.objects.filter(binId=pk).first()
+        if bin is None:
+             response_data = {"response":"Bin does not exists"}
+             return Response(response_data,status=status.HTTP_404_NOT_FOUND)
+       #serializerData = UserSerializer(user)
+        bin.delete()
+        response_data = {"response":"Bin Deleted"}
+        return Response(response_data,status=status.HTTP_200_OK)
+    
+    
 # Create your views here.
 class BinDataAPI(APIView):
     
@@ -82,8 +103,9 @@ class BinDataAPI(APIView):
         return Response(serializerBinParaData.data)
     
     
-     #Function for registering new Bin users
+    #Function for registering new Bin users
     def post(self, request):
+        print("wahala")
         serializerBinParaData = BinDataSerializer(data=request.data)
         if serializerBinParaData.is_valid(raise_exception=True):
             serializerBinParaData.save()

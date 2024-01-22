@@ -9,6 +9,9 @@ class Bin(models.Model):
     binSize = models.CharField(max_length=10)
     manufactureDate = models.DateField(blank=True)
     
+    def __str__(self):
+        return self.binUniqueId
+    
     
 ## User Model for Registering Bin owners/users ##    
 class User(models.Model):
@@ -19,6 +22,9 @@ class User(models.Model):
     email = models.EmailField(max_length=100)
     address = models.CharField(max_length=200)
     assignedBin = models.ForeignKey(Bin, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.firstName
     
     
 ## BinData model for posting Bins parameters ##
@@ -31,4 +37,8 @@ class BinData(models.Model):
     latitude = models.CharField(max_length=20)
     binTemperaure = models.CharField(max_length=20)
     binOrientation = models.CharField(max_length=20)
+    batteryLevel = models.CharField(max_length=10)
+    
+    def __str__(self):
+        return self._bin.binUniqueId
     
