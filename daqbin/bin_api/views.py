@@ -82,7 +82,7 @@ class BinAPI(APIView):
         return Response(serializedBinData.data)
     
     ######################Delete Bin#######################################
-    def delete(self, pk):
+    def delete(self, request, pk):
         bin = Bin.objects.filter(binId=pk).first()
         if bin is None:
              response_data = {"response":"Bin does not exists"}
