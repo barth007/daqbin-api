@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from whitenoise.storage import CompressedManifestStaticFilesStorage
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mvc@gr$zpsyxjju_6v)_%zgsmf%vgdbv&9m)k5%f$x9q=pghw4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG =False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'daqbin-api.onrender.com']
 
@@ -45,6 +47,15 @@ INSTALLED_APPS = [
     #custom apps
     'bin_api',
 ]
+WHITENOISE_IGNORE_MISSING = True
+WHITENOISE_DEBUG = True
+class IgnoreMissingFilesStorage(CompressedManifestStaticFilesStorage):
+    def hashed_name(self, name, content=None, filename=None):
+        try:
+            return super().hashed_name(name, content, filename)
+        except ValueError:
+            # Ignore missing files
+            return name
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -57,6 +68,7 @@ SWAGGER_SETTINGS = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -130,6 +142,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+STATICFILES_STORAGE = "daqbin.settings.IgnoreMissingFilesStorage"
+
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
