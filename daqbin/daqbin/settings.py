@@ -16,8 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mvc@gr$zpsyxjju_6v)_%zgsmf%vgdbv&9m)k5%f$x9q=pghw4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =True
-
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['127.0.0.1', 'daqbin-api.onrender.com']
 
 #Alternatively, allow only specific origins for production
