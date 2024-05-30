@@ -10,6 +10,9 @@ django-countries = {extras = ["pyuca"], version = "*"}
 django-rest-swagger = "*"
 drf-yasg = "*"
 drf-spectacular = "*"
+gunicorn = "*"
+whitenoise = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
