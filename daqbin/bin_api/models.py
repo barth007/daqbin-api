@@ -92,6 +92,8 @@ class BinData(models.Model):
 
 @receiver(post_save, sender=User)
 def create_assign_bin(sender, created, instance, **kwargs):
+    """
+    """
     if created:
         try:
             with transaction.atomic():

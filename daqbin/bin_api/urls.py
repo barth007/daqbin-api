@@ -7,6 +7,6 @@ router = DefaultRouter()
 router.register(r'api/v1/users', UserViewSet, basename='users')
 router.register(r'api/v1/user_address', UserAddressViewSet, basename='user_address')
 router.register(r'api/v1/bins', BinViewSet, basename='bins')
-router.register(r'api/v1/bin_data', BinDataViewSet, basename='bin_data')
+router.register(r'bin_data', BinDataViewSet, basename='bin_data')
 
 urlpatterns = router.urls

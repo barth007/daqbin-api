@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.views import APIView, Response
 from rest_framework import viewsets, mixins
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import action
 
 from .models import Bin, User, BinData, UserAddress
 from .serializers import BinSerializer, UserSerializer, BinDataSerializer, UserAddressSerializer
@@ -56,4 +57,12 @@ class BinDataViewSet(
     """
     queryset = BinData.objects.all()
     serializer_class = BinDataSerializer
+
+
+    @action(detail=False, methods=['get'], url_path='unique-id/(?P<bin_unique_id>[^/.]+)')
+    def get_bindata_by_id(self, request, bin_unique_id=None):
+      bin=get_object_or_404(Bin, bin_unique_id=bin_unique_id)
+      bindata = BinData.objects.filter(the_bin=bin)
+      serializer = self.get_serializer(bindata, many=True)
+      return Response(serializer.data)
 
